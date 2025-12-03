@@ -19,6 +19,8 @@
     .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#10b981);display:flex;align-items:center;justify-content:center;font-weight:700;color:#021018}
     .title h1{margin:0;font-size:20px} .title p{margin:2px 0 0;font-size:13px;color:var(--muted)}
 
+    .navbtn{margin-left:auto;background:var(--accent);padding:10px 14px;border-radius:10px;color:#021018;font-weight:600;text-decoration:none}
+
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .card{background:var(--card);border-radius:var(--radius);padding:var(--card-pad);box-shadow:0 6px 20px rgba(2,6,23,0.6);}
 
@@ -38,26 +40,13 @@
     .profit{background:linear-gradient(90deg, rgba(16,185,129,0.12), rgba(16,185,129,0.04));color:var(--green)}
     .loss{background:linear-gradient(90deg, rgba(220,38,38,0.1), rgba(220,38,38,0.03));color:var(--red)}
 
-    /* boxed borders style */
-    .box-title{font-weight:700;margin-bottom:8px}
-    .box{border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:10px}
-
-    /* progress bar */
     .progress-wrap{height:12px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden}
     .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#10b981);transition:width 350ms linear}
 
-    .controls{display:flex;gap:8px;align-items:center}
     .footer{margin-top:14px;color:var(--muted);font-size:13px;text-align:center}
 
     @media (max-width:820px){.grid{grid-template-columns:1fr}.logo{display:none}}
-  @media (max-width: 768px) {
-  body { padding: 10px; }
-  .container { width: 100%; padding: 15px; }
-  nav ul { flex-direction: column; gap: 10px; }
-  h1 { font-size: 1.8rem; }
-  p { font-size: 1rem; }
-}
-</style>
+  </style>
 </head>
 <body>
   <div class="wrap">
@@ -65,213 +54,193 @@
       <div class="logo">SC</div>
       <div class="title">
         <h1>Stock Trade Calculator</h1>
-        <p>Buy → Review → Sell — fees & final profit calculated</p>
+        <p>Buy → Sell → Calculate profit instantly</p>
       </div>
+
+      <!-- 🔵 New Difference Page Link -->
+      <a href="difference.html" class="navbtn">Difference</a>
     </div>
 
+    <!-- BUY + SELL GRID -->
     <div class="grid">
+
+      <!-- BUY SECTION -->
       <div class="card">
         <div class="box">
           <div class="box-title">BUY SECTION</div>
           <label>Buy Price (Rs.)</label>
-          <input id="buyPrice" type="number" min="0" step="0.01" placeholder="e.g. 60.80">
+          <input id="buyPrice" type="number" step="0.01">
 
           <label style="margin-top:10px">Buy Quantity</label>
-          <input id="buyQty" type="number" min="1" step="1" placeholder="e.g. 10">
+          <input id="buyQty" type="number" min="1">
 
-          <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-            <button id="buyBtn" class="btn">Calculate Buy</button>
-            <button id="resetBuy" class="btn secondary">Reset Buy</button>
-          </div>
+          <button id="buyBtn" class="btn" style="margin-top:12px">Calculate Buy</button>
 
-          <div style="margin-top:12px" id="buyResult" class="summary" hidden>
-            <div class="row"><div>Buy Total</div><div class="value" id="buyTotalDisplay">Rs. 0.00</div></div>
-            <div class="row"><div>Buy Fee (1.120%)</div><div class="value" id="buyFeeDisplay">Rs. 0.00</div></div>
-            <div class="row"><div>Total to Pay</div><div class="value" id="combinedBuyDisplay">Rs. 0.00</div></div>
-            <div style="margin-top:10px;text-align:center;color:var(--muted);font-size:13px">Click <b>Continue to Sell</b> to enter sell details</div>
-            <div style="margin-top:10px;display:flex;justify-content:center">
-              <button id="toSell" class="btn" disabled>Continue to Sell</button>
-            </div>
+          <div id="buyResult" class="summary" hidden style="margin-top:14px">
+            <div class="row"><div>Buy Total</div><div id="buyTotalDisplay" class="value">Rs. 0.00</div></div>
+            <div class="row"><div>Buy Fee (1.120%)</div><div id="buyFeeDisplay" class="value">Rs. 0.00</div></div>
+            <div class="row"><div>Total</div><div id="combinedBuyDisplay" class="value">Rs. 0.00</div></div>
+            <button id="toSell" class="btn" style="margin-top:10px" disabled>Continue → Sell</button>
           </div>
         </div>
       </div>
 
+      <!-- SELL SECTION -->
       <div class="card">
         <div class="box">
           <div class="box-title">SELL SECTION</div>
           <label>Sell Price (Rs.)</label>
-          <input id="sellPrice" type="number" min="0" step="0.01" placeholder="e.g. 60.90" disabled>
+          <input id="sellPrice" type="number" step="0.01" disabled>
 
           <label style="margin-top:10px">Sell Quantity</label>
-          <input id="sellQty" type="number" min="1" step="1" placeholder="e.g. 10" disabled>
+          <input id="sellQty" type="number" disabled>
 
-          <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-            <button id="calcSell" class="btn" disabled>Calculate Sell & Profit</button>
-            <button id="resetAll" class="btn secondary">Reset All</button>
+          <button id="calcSell" class="btn" style="margin-top:12px" disabled>
+            Calculate Profit
+          </button>
+
+          <div id="sellResult" class="summary" hidden style="margin-top:14px">
+            <div class="row"><div>Sell Total</div><div id="sellTotalDisplay" class="value"></div></div>
+            <div class="row"><div>Sell Fee</div><div id="sellFeeDisplay" class="value"></div></div>
+            <div class="row"><div>Total Fees</div><div id="feeTotalDisplay" class="value"></div></div>
+            <div class="row"><div>Before Fees</div><div id="profitBeforeDisplay" class="value"></div></div>
+
+            <div id="finalBox" class="final">
+              Final Profit: <span id="finalProfitDisplay"></span>
+            </div>
           </div>
 
-          <div style="margin-top:12px" id="sellResult" class="summary" hidden>
-            <div class="row"><div>Sell Total</div><div class="value" id="sellTotalDisplay">Rs. 0.00</div></div>
-            <div class="row"><div>Sell Fee (1.120%)</div><div class="value" id="sellFeeDisplay">Rs. 0.00</div></div>
-            <div class="row"><div>Combined Fees</div><div class="value" id="feeTotalDisplay">Rs. 0.00</div></div>
-            <div class="row"><div>Profit Before Fees</div><div class="value" id="profitBeforeDisplay">Rs. 0.00</div></div>
-            <div style="margin-top:10px" id="finalBox" class="final">Final Profit: <span id="finalProfitDisplay">Rs. 0.00</span></div>
+          <div class="progress-wrap" id="progressWrap" hidden style="margin-top:14px">
+            <div class="progress-bar" id="progressBar"></div>
           </div>
 
-          <div style="margin-top:12px">
-            <div class="progress-wrap" hidden id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
-          </div>
         </div>
       </div>
+
     </div>
 
-    <div style="margin-top:18px" class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div class="muted">All values show two decimal places • Fees rate 1.120%</div>
-        <div>
-          <button id="downloadBtn" class="btn secondary">Download Result</button>
-          <button id="runAgain" class="btn">Run Again</button>
-        </div>
-      </div>
+    <div style="margin-top:20px" class="footer">
+      Fill BUY → Then SELL.  
     </div>
-
-    <div class="footer">Tip: Fill BUY first, click <b>Calculate Buy</b>, then click <b>Continue to Sell</b>.</div>
   </div>
+
 
 <script>
 (function(){
-  // Elements
-  const buyPrice = document.getElementById('buyPrice');
-  const buyQty = document.getElementById('buyQty');
-  const buyBtn = document.getElementById('buyBtn');
-  const resetBuy = document.getElementById('resetBuy');
-  const buyResult = document.getElementById('buyResult');
-  const buyTotalDisplay = document.getElementById('buyTotalDisplay');
-  const buyFeeDisplay = document.getElementById('buyFeeDisplay');
-  const combinedBuyDisplay = document.getElementById('combinedBuyDisplay');
-  const toSell = document.getElementById('toSell');
 
-  const sellPrice = document.getElementById('sellPrice');
-  const sellQty = document.getElementById('sellQty');
-  const calcSell = document.getElementById('calcSell');
-  const resetAll = document.getElementById('resetAll');
-  const sellResult = document.getElementById('sellResult');
-  const sellTotalDisplay = document.getElementById('sellTotalDisplay');
-  const sellFeeDisplay = document.getElementById('sellFeeDisplay');
-  const feeTotalDisplay = document.getElementById('feeTotalDisplay');
-  const profitBeforeDisplay = document.getElementById('profitBeforeDisplay');
-  const finalProfitDisplay = document.getElementById('finalProfitDisplay');
-  const finalBox = document.getElementById('finalBox');
+  const FEE = 1.120 / 100;
 
-  const progressWrap = document.getElementById('progressWrap');
-  const progressBar = document.getElementById('progressBar');
-  const runAgain = document.getElementById('runAgain');
-  const downloadBtn = document.getElementById('downloadBtn');
+  // DOM Elements
+  const buyPrice = buyPrice;
+  const buyQty = buyQty;
+  const buyBtn = buyBtn;
+  const toSellBtn = toSell;
+  const buyResult = buyResult;
 
-  const FEE_RATE = 1.120 / 100;
+  const sellPrice = sellPrice;
+  const sellQty = sellQty;
+  const calcSell = calcSell;
+  const sellResult = sellResult;
 
-  function formatR(x){ return 'Rs. ' + Number(x || 0).toFixed(2); }
+  const buyTotalDisplay = buyTotalDisplay;
+  const buyFeeDisplay = buyFeeDisplay;
+  const combinedBuyDisplay = combinedBuyDisplay;
 
-  // Buy calculate
-  buyBtn.addEventListener('click', function(){
+  const sellTotalDisplay = sellTotalDisplay;
+  const sellFeeDisplay = sellFeeDisplay;
+  const feeTotalDisplay = feeTotalDisplay;
+  const profitBeforeDisplay = profitBeforeDisplay;
+  const finalProfitDisplay = finalProfitDisplay;
+  const finalBox = finalBox;
+
+  const progressWrap = progressWrap;
+  const progressBar = progressBar;
+
+  function fmt(x){ return "Rs. " + Number(x).toFixed(2); }
+
+  function animate(cb){
+    progressWrap.hidden = false;
+    progressBar.style.width = "0%";
+    let x = 0;
+    let id = setInterval(()=>{
+      x += 20;
+      if(x>=100){
+        x=100; clearInterval(id);
+        setTimeout(()=>{progressWrap.hidden = true; cb();},300);
+      }
+      progressBar.style.width = x+"%";
+    },100);
+  }
+
+  buyBtn.onclick = ()=>{
+
     const p = parseFloat(buyPrice.value);
-    const q = parseInt(buyQty.value,10);
-    if(!isFinite(p) || p<=0){ alert('Enter valid Buy Price'); buyPrice.focus(); return; }
-    if(!Number.isInteger(q) || q<=0){ alert('Enter valid Buy Quantity'); buyQty.focus(); return; }
+    const q = parseInt(buyQty.value);
 
-    // simulate small progress
-    animateProgress('Processing BUY', ()=>{
-      const bt = p*q;
-      const bf = bt * FEE_RATE;
-      const cb = bt + bf;
-      buyTotalDisplay.textContent = formatR(bt);
-      buyFeeDisplay.textContent = formatR(bf);
-      combinedBuyDisplay.textContent = formatR(cb);
+    if(!p || !q){ alert("Enter valid BUY inputs"); return; }
+
+    animate(()=>{
+      let total = p*q;
+      let fee = total * FEE;
+      let combined = total + fee;
+
+      buyTotalDisplay.textContent = fmt(total);
+      buyFeeDisplay.textContent = fmt(fee);
+      combinedBuyDisplay.textContent = fmt(combined);
+
       buyResult.hidden = false;
-      toSell.disabled = false;
-      // enable sell inputs when continue clicked
+
+      toSellBtn.disabled = false;
     });
-  });
+  };
 
-  resetBuy.addEventListener('click', ()=>{
-    buyPrice.value=''; buyQty.value=''; buyResult.hidden = true; toSell.disabled = true; sellPrice.disabled=true; sellQty.disabled=true; calcSell.disabled=true; sellResult.hidden=true; finalBox.className='final'; finalProfitDisplay.textContent = formatR(0);
-  });
+  toSellBtn.onclick = ()=>{
+    sellPrice.disabled = false;
+    sellQty.disabled = false;
+    calcSell.disabled = false;
+    sellPrice.focus();
+  };
 
-  toSell.addEventListener('click', ()=>{
-    // enable sell inputs
-    sellPrice.disabled = false; sellQty.disabled = false; calcSell.disabled = false; sellPrice.focus();
-  });
+  calcSell.onclick = ()=>{
 
-  // Sell calculate
-  calcSell.addEventListener('click', function(){
-    const sp = parseFloat(sellPrice.value);
-    const sq = parseInt(sellQty.value,10);
     const bp = parseFloat(buyPrice.value);
-    const bq = parseInt(buyQty.value,10);
-    if(!isFinite(sp) || sp<=0){ alert('Enter valid Sell Price'); sellPrice.focus(); return; }
-    if(!Number.isInteger(sq) || sq<=0){ alert('Enter valid Sell Quantity'); sellQty.focus(); return; }
+    const bq = parseInt(buyQty.value);
 
-    animateProgress('Processing SELL', ()=>{
-      const st = sp*sq;
-      const sf = st * FEE_RATE;
+    const sp = parseFloat(sellPrice.value);
+    const sq = parseInt(sellQty.value);
+
+    if(!sp || !sq) return alert("Enter valid SELL details");
+
+    animate(()=>{
+
       const bt = bp*bq;
-      const bf = bt * FEE_RATE;
-      const feeTotal = bf + sf;
-      const profitBefore = st - bt;
-      const finalProfit = profitBefore - feeTotal;
+      const st = sp*sq;
 
-      sellTotalDisplay.textContent = formatR(st);
-      sellFeeDisplay.textContent = formatR(sf);
-      feeTotalDisplay.textContent = formatR(feeTotal);
-      profitBeforeDisplay.textContent = formatR(profitBefore);
-      finalProfitDisplay.textContent = formatR(finalProfit);
+      const buyFee = bt * FEE;
+      const sellFee = st * FEE;
+
+      const totalFees = buyFee + sellFee;
+      const beforeFees = st - bt;
+
+      const final = beforeFees - totalFees;
+
+      sellTotalDisplay.textContent = fmt(st);
+      sellFeeDisplay.textContent = fmt(sellFee);
+      feeTotalDisplay.textContent = fmt(totalFees);
+      profitBeforeDisplay.textContent = fmt(beforeFees);
+      finalProfitDisplay.textContent = fmt(final);
+
       sellResult.hidden = false;
 
-      // color final box green/red
-      if(finalProfit >= 0){ finalBox.classList.remove('loss'); finalBox.classList.add('profit'); }
-      else{ finalBox.classList.remove('profit'); finalBox.classList.add('loss'); }
+      finalBox.classList.remove("profit","loss");
+      finalBox.classList.add(final>=0 ? "profit" : "loss");
+
     });
-  });
 
-  resetAll.addEventListener('click', ()=>{
-    // reset all fields
-    buyPrice.value=''; buyQty.value=''; sellPrice.value=''; sellQty.value=''; buyResult.hidden=true; sellResult.hidden=true; toSell.disabled=true; sellPrice.disabled=true; sellQty.disabled=true; calcSell.disabled=true; finalBox.className='final'; finalProfitDisplay.textContent = formatR(0);
-  });
-
-  runAgain.addEventListener('click', ()=>{
-    // clear screen: reset all and scroll to top
-    resetAll.click(); window.scrollTo({top:0,behavior:'smooth'});
-  });
-
-  downloadBtn.addEventListener('click', ()=>{
-    const content = [
-      'Buy Total: ' + buyTotalDisplay.textContent,
-      'Buy Fee: ' + buyFeeDisplay.textContent,
-      'Combined Buy: ' + combinedBuyDisplay.textContent,
-      'Sell Total: ' + sellTotalDisplay.textContent,
-      'Sell Fee: ' + sellFeeDisplay.textContent,
-      'Combined Fees: ' + feeTotalDisplay.textContent,
-      'Profit Before Fees: ' + profitBeforeDisplay.textContent,
-      'Final Profit: ' + finalProfitDisplay.textContent
-    ].join('\n');
-    const blob = new Blob([content],{type:'text/plain'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = 'trade_result.txt'; a.click(); URL.revokeObjectURL(url);
-  });
-
-  // progress animation helper
-  function animateProgress(message, cb){
-    progressWrap.hidden = false; progressBar.style.width = '0%';
-    let step = 0;
-    const id = setInterval(()=>{
-      step += Math.random()*25 + 5; // random faster feel
-      if(step>=100) step = 100;
-      progressBar.style.width = step + '%';
-      if(step>=100){ clearInterval(id); setTimeout(()=>{ progressBar.style.width = '0%'; progressWrap.hidden=true; cb(); }, 300); }
-    }, 80);
-  }
+  };
 
 })();
 </script>
+
 </body>
 </html>
