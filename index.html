@@ -47,19 +47,10 @@
       background:var(--glass);color:inherit;font-size:14px
     }
 
-    .btn{
-      display:inline-flex;align-items:center;gap:8px;
-      background:var(--accent);color:#021018;
-      padding:10px 14px;border-radius:10px;border:0;
-      cursor:pointer;font-weight:600
-    }
-    .btn.secondary{
-      background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)
-    }
-
     .summary{
       background:linear-gradient(180deg, rgba(255,255,255,0.02),
-      rgba(255,255,255,0.01));padding:12px;border-radius:10px
+      rgba(255,255,255,0.01));padding:12px;border-radius:10px;
+      margin-top:12px;
     }
     .row{
       display:flex;justify-content:space-between;padding:8px 0;
@@ -78,9 +69,7 @@
       rgba(220,38,38,0.03));color:var(--red)
     }
 
-    .footer{
-      margin-top:14px;color:var(--muted);font-size:13px;text-align:center
-    }
+    .footer{margin-top:14px;color:var(--muted);font-size:13px;text-align:center}
 
     @media (max-width:820px){
       .grid{grid-template-columns:1fr}
@@ -94,7 +83,7 @@
       <div class="logo">SC</div>
       <div class="title">
         <h1>Stock Trade Calculator</h1>
-        <p>Buy → Review → Sell — fees & final profit calculated</p>
+        <p>Auto Calculation — No Buttons Needed</p>
       </div>
     </div>
 
@@ -107,16 +96,14 @@
         <label style="margin-top:10px">Buy Quantity</label>
         <input id="buyQty" type="number" step="1">
 
-        <button id="buyBtn" class="btn" style="margin-top:12px">Calculate Buy</button>
-
-        <div id="buyResult" class="summary" hidden style="margin-top:12px">
+        <div id="buyResult" class="summary" hidden>
           <div class="row"><div>Buy Total</div><div class="value" id="buyTotal">Rs. 0.00</div></div>
           <div class="row"><div>Buy Fee (1.120%)</div><div class="value" id="buyFee">Rs. 0.00</div></div>
           <div class="row"><div>Total to Pay</div><div class="value" id="buyNet">Rs. 0.00</div></div>
         </div>
       </div>
 
-      <!-- SELL (Always Active) -->
+      <!-- SELL -->
       <div class="card">
         <label>Sell Price (Rs.)</label>
         <input id="sellPrice" type="number" step="0.01">
@@ -124,9 +111,7 @@
         <label style="margin-top:10px">Sell Quantity</label>
         <input id="sellQty" type="number" step="1">
 
-        <button id="sellBtn" class="btn" style="margin-top:12px">Calculate Sell & Profit</button>
-
-        <div id="sellResult" class="summary" hidden style="margin-top:12px">
+        <div id="sellResult" class="summary" hidden>
           <div class="row"><div>Sell Total</div><div class="value" id="sellTotal">Rs. 0.00</div></div>
           <div class="row"><div>Sell Fee (1.120%)</div><div class="value" id="sellFee">Rs. 0.00</div></div>
           <div class="row"><div>Total Fees</div><div class="value" id="allFees">Rs. 0.00</div></div>
@@ -139,65 +124,80 @@
       </div>
     </div>
 
-    <!-- BLUE BUTTON HERE -->
-    <div style="margin-top:18px;text-align:center">
-      <button class="btn" style="background:#1E40AF;color:white"
-        onclick="location.href='difference.html'">
-        Go to Difference Page
+    <!-- ⭐ NEW PREMIUM BUTTON WITH FIXED LINK -->
+    <div style="margin-top:25px; text-align:center;">
+      <button 
+        style="
+          background:#0ea5e9;
+          color:white;
+          padding:14px 28px;
+          border:none;
+          border-radius:12px;
+          font-size:16px;
+          font-weight:600;
+          cursor:pointer;
+          box-shadow:0 4px 14px rgba(14,165,233,0.4);
+          transition:0.25s;
+        "
+        onmouseover="this.style.background='#38bdf8'"
+        onmouseout="this.style.background='#0ea5e9'"
+        onclick="window.location.href='difference.html'">
+         Go To Price Difference Calculator
       </button>
     </div>
 
-    <div class="footer">Tip: Fill BUY first, then SELL for accurate profit.</div>
+    <div class="footer">Everything calculates automatically ✨</div>
   </div>
 
 <script>
 const FEE = 1.120 / 100;
 const r = n => "Rs. " + Number(n).toFixed(2);
 
-buyBtn.onclick = () => {
-  let p = parseFloat(buyPrice.value);
-  let q = parseFloat(buyQty.value);
-  if(!p || !q) return alert("Enter valid BUY values");
-
-  let t = p*q;
-  let f = t*FEE;
-  let net = t+f;
-
-  buyTotal.textContent = r(t);
-  buyFee.textContent = r(f);
-  buyNet.textContent = r(net);
-  buyResult.hidden = false;
-};
-
-sellBtn.onclick = () => {
-  let sp = parseFloat(sellPrice.value);
-  let sq = parseFloat(sellQty.value);
+function autoCalc() {
   let bp = parseFloat(buyPrice.value);
   let bq = parseFloat(buyQty.value);
 
-  if(!sp || !sq) return alert("Enter valid SELL values");
-  if(!bp || !bq) return alert("Fill BUY section first");
+  let sp = parseFloat(sellPrice.value);
+  let sq = parseFloat(sellQty.value);
 
-  let st = sp*sq;
-  let sf = st*FEE;
+  if (bp > 0 && bq > 0) {
+    let t = bp * bq;
+    let f = t * FEE;
+    let net = t + f;
 
-  let bt = bp*bq;
-  let bf = bt*FEE;
+    buyTotal.textContent = r(t);
+    buyFee.textContent = r(f);
+    buyNet.textContent = r(net);
 
-  let fees = sf + bf;
-  let pb = st - bt;
-  let fp = pb - fees;
+    buyResult.hidden = false;
+  }
 
-  sellTotal.textContent = r(st);
-  sellFee.textContent = r(sf);
-  allFees.textContent = r(fees);
-  pBefore.textContent = r(pb);
-  profitFinal.textContent = r(fp);
+  if (sp > 0 && sq > 0 && bp > 0 && bq > 0) {
+    let st = sp * sq;
+    let sf = st * FEE;
 
-  finalBox.className = fp >= 0 ? "final profit" : "final loss";
+    let bt = bp * bq;
+    let bf = bt * FEE;
 
-  sellResult.hidden = false;
-};
+    let fees = sf + bf;
+    let pb = st - bt;
+    let fp = pb - fees;
+
+    sellTotal.textContent = r(st);
+    sellFee.textContent = r(sf);
+    allFees.textContent = r(fees);
+    pBefore.textContent = r(pb);
+    profitFinal.textContent = r(fp);
+
+    finalBox.className = fp >= 0 ? "final profit" : "final loss";
+
+    sellResult.hidden = false;
+  }
+}
+
+document.querySelectorAll("input").forEach(i => {
+  i.addEventListener("input", autoCalc);
+});
 </script>
 </body>
 </html>

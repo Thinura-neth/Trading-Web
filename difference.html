@@ -4,147 +4,169 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Price Difference Calculator</title>
+
 <style>
+    :root{
+        --accent:#06b6d4;
+        --green:#16a34a;
+        --red:#dc2626;
+        --card:#0b1220;
+        --bg:#0f1724;
+        --glass:rgba(255,255,255,0.05);
+        --muted:#9aa4b2;
+    }
+
     body {
-        font-family: Arial, sans-serif;
-        background: #0a0a0a;
-        color: white;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(180deg,#071229 0%, #081226 100%);
         margin: 0;
         padding: 20px;
+        color: #e6eef6;
+        display:flex;
+        justify-content:center;
     }
 
     .container {
-        max-width: 450px;
-        margin: auto;
-        background: #111;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 0 10px #00aaff;
+        width:100%;
+        max-width:450px;
+        background:var(--card);
+        padding:22px;
+        border-radius:16px;
+        box-shadow:0 8px 30px rgba(0,0,0,0.45);
+        border:1px solid rgba(255,255,255,0.04);
+        backdrop-filter: blur(6px);
+        margin-top:25px;
     }
 
     h2 {
         text-align: center;
-        color: #00ccff;
-        margin-bottom: 20px;
+        color: var(--accent);
+        font-size:22px;
+        margin-bottom:18px;
     }
 
     label {
-        font-size: 15px;
+        display:block;
+        font-size:14px;
+        color:var(--muted);
+        margin-bottom:6px;
     }
 
     input {
         width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        margin-bottom: 15px;
-        border-radius: 8px;
-        border: none;
-        font-size: 16px;
-        background: #222;
-        color: white;
-    }
-
-    button {
-        width: 100%;
         padding: 12px;
-        font-size: 18px;
-        background: #00aaff;
-        border: none;
-        color: white;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    button:hover {
-        background: #0088cc;
+        border-radius:10px;
+        border:1px solid rgba(255,255,255,0.04);
+        background:var(--glass);
+        color:white;
+        font-size:16px;
+        margin-bottom:15px;
     }
 
     .result-box {
-        margin-top: 20px;
-        padding: 15px;
-        border-radius: 10px;
-        text-align: center;
-        font-size: 20px;
-        font-weight: bold;
+        padding:15px;
+        border-radius:12px;
+        text-align:center;
+        font-size:20px;
+        font-weight:600;
+        margin-top:10px;
+        animation: fadeIn 0.25s ease;
     }
 
     .profit {
-        background: rgba(0,255,0,0.15);
-        border: 2px solid #00ff00;
-        color: #00ff00;
+        background:rgba(22,163,74,0.12);
+        color:var(--green);
+        border:1px solid rgba(22,163,74,0.45);
     }
 
     .loss {
-        background: rgba(255,0,0,0.15);
-        border: 2px solid #ff0000;
-        color: #ff4444;
+        background:rgba(220,38,38,0.12);
+        color:var(--red);
+        border:1px solid rgba(220,38,38,0.45);
+    }
+
+    .neutral {
+        background:rgba(255,255,255,0.05);
+        border:1px solid rgba(255,255,255,0.12);
+        color:#ddd;
+    }
+
+    @keyframes fadeIn {
+        from {opacity:0;transform:translateY(6px);}
+        to {opacity:1;transform:translateY(0);}
     }
 
     .nav {
-        text-align: center;
-        margin-top: 20px;
+        text-align:center;
+        margin-top:25px;
     }
 
-    .nav a {
-        color: #00ccff;
-        text-decoration: none;
+    .nav button {
+        background:#0ea5e9;
+        color:white;
+        padding:12px 22px;
+        border:none;
+        border-radius:12px;
+        font-size:15px;
+        font-weight:600;
+        cursor:pointer;
+        box-shadow:0 4px 14px rgba(14,165,233,0.4);
+        transition:0.25s;
     }
 
-    @media (max-width: 480px) {
-        .container {
-            margin-top: 10px;
-            padding: 15px;
-        }
-        h2 {
-            font-size: 20px;
-        }
+    .nav button:hover {
+        background:#38bdf8;
     }
+
 </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Buy → Sell Difference Calculator</h2>
 
-    <label>Buy Price:</label>
+    <h2>Price Difference Calculator</h2>
+
+    <label>Buy Price</label>
     <input id="buy" type="number" placeholder="Enter Buy Price">
 
-    <label>Sell Price:</label>
+    <label>Sell Price</label>
     <input id="sell" type="number" placeholder="Enter Sell Price">
-
-    <button onclick="calculate()">Calculate Difference</button>
 
     <div id="result"></div>
 
     <div class="nav">
-        <br>
-        <a href="index.html">⬅ Back to Main Page</a>
+        <button onclick="location.href='index.html'">⬅ Back to Main Page</button>
     </div>
+
 </div>
 
 <script>
-function calculate() {
+function autoCalc() {
     let buy = parseFloat(document.getElementById("buy").value);
     let sell = parseFloat(document.getElementById("sell").value);
+    let box = document.getElementById("result");
 
-    if (isNaN(buy) || isNaN(sell)) {
-        alert("Please fill both fields!");
+    if (!buy || !sell) {
+        box.innerHTML = "";
         return;
     }
 
     let diff = sell - buy;
 
-    let box = document.getElementById("result");
-
     if (diff > 0) {
         box.innerHTML = `<div class='result-box profit'>Profit: +${diff.toFixed(2)}</div>`;
-    } else if (diff < 0) {
+    } 
+    else if (diff < 0) {
         box.innerHTML = `<div class='result-box loss'>Loss: ${diff.toFixed(2)}</div>`;
-    } else {
-        box.innerHTML = `<div class='result-box' style="border:2px solid #999; background:#222;">No Profit / No Loss</div>`;
+    } 
+    else {
+        box.innerHTML = `<div class='result-box neutral'>No Profit / No Loss</div>`;
     }
 }
+
+document.querySelectorAll("input").forEach(i => {
+    i.addEventListener("input", autoCalc);
+});
 </script>
 
 </body>
