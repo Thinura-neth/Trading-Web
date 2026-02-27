@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied - Server Admin Blocked</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .error-icon {
+            font-size: 80px;
+            color: #ff4757;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: #ff6b81;
+            text-shadow: 0 2px 10px rgba(255, 107, 129, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a4b0be;
+            margin-bottom: 30px;
+        }
+        
+        .message-box {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: left;
+            border-left: 5px solid #ff6b81;
+        }
+        
+        .message-box h2 {
+            color: #ffa502;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .message-box p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .possible-reasons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 25px 0;
+            justify-content: center;
+        }
+        
+        .reason {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            flex: 1;
+            min-width: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, background 0.3s;
+        }
+        
+        .reason:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .reason i {
+            font-size: 24px;
+            color: #70a1ff;
+            margin-bottom: 10px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #3742fa, #5352ed);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #5352ed, #3742fa);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(55, 66, 250, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .admin-contact {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-contact h3 {
+            color: #2ed573;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .contact-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(46, 213, 115, 0.1);
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: 1px solid rgba(46, 213, 115, 0.3);
+        }
+        
+        .footer {
+            margin-top: 40px;
+            color: #a4b0be;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .error-icon {
+                font-size: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="error-icon">
+                <i class="fas fa-ban"></i>
+            </div>
+            <h1>Access Denied</h1>
+            <p class="subtitle">Server Admin Blocked The Server<br>You Have To Compleate Our Payment</p>
+        </div>
+        
+        <div class="message-box">
+            <h2><i class="fas fa-exclamation-triangle"></i> What happened?</h2>
+            <p>You are seeing this page because the server administrator has restricted access to this server or specific resource. This block could be due to various security or administrative reasons.</p>
+            <p>The server administrator has enforced access restrictions that prevent your request from being fulfilled at this time.</p>
+        </div>
+        
+        <h2 style="color: #70a1ff; margin-bottom: 20px;">Possible Reasons</h2>
+        <div class="possible-reasons">
+            <div class="reason">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Payment Not Paid</h3>
+                <p>You Have To Pay For Us For Enable The Access.</p>
+            </div>
+            <div class="reason">
+                <i class="fas fa-user-cog"></i>
+                <h3>Administrative Action</h3>
+                <p>The server admin may have manually blocked access for maintenance or other reasons.</p>
+            </div>
+            <div class="reason">
+                <i class="fas fa-clock"></i>
+                <h3>Temporary Restriction</h3>
+                <p>This could be a temporary block that will be lifted after a certain period.</p>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="retryBtn">
+                <i class="fas fa-redo"></i> Try Again
+            </button>
+        </div>
+        
+        <div class="admin-contact">
+            <h3><i class="fas fa-headset"></i> Need Help?</h3>
+            <p>If you believe this is a mistake or need access, please contact the server administrator:</p>
+            <div class="contact-info">
+                <i class="fas fa-envelope"></i>
+                <span><a href = https://web-2x-core-solutions.vercel.app/contact.html>Admin Web 2X CORE Solutions <a/></span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Error Code: 403 Forbidden | Server: WebServer/2.0</p>
+            <p>Request ID: #BLK-<?php echo rand(10000, 99999); ?> | Timestamp: <span id="timestamp"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Set current timestamp
+        const now = new Date();
+        const timestampElement = document.getElementById('timestamp');
+        timestampElement.textContent = now.toLocaleString();
+        
+        // Retry button functionality
+        document.getElementById('retryBtn').addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Retrying...';
+            this.disabled = true;
+            
+            // Simulate retry attempt
+            setTimeout(() => {
+                alert("Retry unsuccessful. Access is still blocked. Please contact the administrator.");
+                this.innerHTML = '<i class="fas fa-redo"></i> Try Again';
+                this.disabled = false;
+            }, 2000);
+        });
+        
+        // Add some dynamic effect to the error icon
+        const errorIcon = document.querySelector('.error-icon');
+        setInterval(() => {
+            errorIcon.style.transform = `rotate(${Math.random() * 4 - 2}deg)`;
+        }, 3000);
+    </script>
+</body>
+</html>
